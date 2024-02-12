@@ -5,12 +5,6 @@ session_start();
 $error = array();
 
 if (isset($_POST['submit'])){
-    if (isset($_POST['email'])) {
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
-    } else {
-        $error[] = 'Email is missing.';
-    }
-
     if (isset($_POST['password'])) {
         $password = md5($_POST['password']);
     } else {
@@ -18,13 +12,13 @@ if (isset($_POST['submit'])){
     }
 
     // Check the corresponding table based on email
-    $select = "SELECT * FROM student_table WHERE email = '$email' AND password = '$password'";
+    $select = "SELECT * FROM student_table WHERE password = '$password'";
     $result_student = mysqli_query($conn, $select);
 
-    $select = "SELECT * FROM cashier_table WHERE email = '$email' AND password = '$password'";
+    $select = "SELECT * FROM cashier_table WHERE password = '$password'";
     $result_cashier = mysqli_query($conn, $select);
 
-    $select = "SELECT * FROM registrar_table WHERE email = '$email' AND password = '$password'";
+    $select = "SELECT * FROM registrar_table WHERE password = '$password'";
     $result_registrar = mysqli_query($conn, $select);
 
     if (mysqli_num_rows($result_student) > 0) {
@@ -55,7 +49,7 @@ if (isset($_POST['submit'])){
         $_SESSION['user_initial'] = substr($row['f_name'], 0, 1);
         header('location: registrar_page.php');
     } else {
-        $error[] = 'Incorrect Email or Password!';
+        $error[] = 'Incorrect Password!';
     }
 };
 
@@ -100,28 +94,7 @@ if (isset($_POST['submit'])){
             max-width: 500px;
             margin: 0 auto;
             text-align: center;
-        }
-
-        .form-container form .google-button {
-            width: 100%;
-	        padding: 10px 15px;
-	        font-size: 17px;
-            margin: 8px 0;
-            margin: 8px 0;
-	        border-radius: 5px;
-            border: 2px solid crimson;
-            background: white;
-	        color: crimson;
-	        text-transform: capitalize;
-	        font-size: 20px;
-	        cursor: pointer;
-        }
-
-        .form-container form .google-button:hover {
-	        background: crimson;
-	        color: #fff;
-        }
-
+        }   
 
     </style>
 </head>
@@ -131,8 +104,8 @@ if (isset($_POST['submit'])){
         <img src="images/logo.png" alt="logo">
     </div>
     <div class="form-container">
-        <form action="login_form.php" method="post">
-            <h3>LogIn Now</h3>
+        <form action="login_google.php" method="post">
+            <h3>Confirm with Password</h3>
             <?php
             if (!empty($error)) {
                 foreach ($error as $error) {
@@ -140,60 +113,12 @@ if (isset($_POST['submit'])){
                 }
             }
             ?>
-            <input type="email" name="email" required placeholder="Enter your Email">
             <input type="password" name="password" required placeholder="Enter your Password">
             <input type="submit" name="submit" value="LogIn Now" class="form-btn">
-            <button type="submit" name="button" class="google-button" id="buttongoogle"><img src="images/google.png" alt="button">&nbsp; Sign In With Google+</button>
             <p>Don't have an Account? <a href="register_form.php">Register Now</a> </p>
         </form>
     </div>
 </div>
-
-
-<script type="module">
-    
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-    
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAygwEzzDOPE3u0QgYpQJzd2RnI6KsbGEk",
-      authDomain: "studentsafe-f84e3.firebaseapp.com",
-      projectId: "studentsafe-f84e3",
-      storageBucket: "studentsafe-f84e3.appspot.com",
-      messagingSenderId: "669624594218",
-      appId: "1:669624594218:web:56b71d2cf93fe9349f7853"
-    };
-    
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    auth.languageCode = 'en'
-    
-    const provider = new GoogleAuthProvider();
-    
-    const googleLogin = document.getElementById("buttongoogle");
-    googleLogin.addEventListener("click", function(){
-      signInWithPopup(auth, provider)
-    .then((result) => {
-      
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const user = result.user;
-      console.log(user);
-      window.location.href = "login_google.php";
-    
-    }).catch((error) => {
-      
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    
-     
-    });
-    })
-    </script>
 
 </body>
 </html>

@@ -63,36 +63,11 @@ if (isset($_POST['submit'])) {
 	<title>Register Form</title>
 	<!-- custom css file link --> 
 	<link rel="stylesheet" type="text/css" href="style.css">
-
-    <style>
-
-.form-container form .google-button {
-            width: 100%;
-	        padding: 10px 15px;
-	        font-size: 17px;
-            margin: 8px 0;
-            margin: 8px 0;
-	        border-radius: 5px;
-            border: 2px solid crimson;
-            background: white;
-	        color: crimson;
-	        text-transform: capitalize;
-	        font-size: 20px;
-	        cursor: pointer;
-        }
-
-        .form-container form .google-button:hover {
-	        background: crimson;
-	        color: #fff;
-        }
-
-
-    </style>
 </head>
 <body>
 	<div class="form-container">
-		<form action="register_form.php" method="POST">
-			<h3>Register With Email</h3>
+		<form action="register_form_google.php" method="POST">
+			<h3>Register Now</h3>
 			<?php
 				if(isset($error)){
 					foreach($error as $error){
@@ -113,54 +88,8 @@ if (isset($_POST['submit'])) {
 			<input type="password" name="password" required placeholder="Enter your Password *">
 			<input type="password" name="cpassword" required placeholder="Confirm your Password *">
 			<input type="submit" name="submit" value="Register Now" class="form-btn">
-            <button type="submit" name="button" class="google-button" id="buttongoogle"><img src="images/google.png" alt="button">&nbsp; Register With Google+</button>
 			<p>Already have an Account? <a href="login_form.php">Login Now</a> </p>
 		</form>
 	</div>
-
-    <script type="module">
-    
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-    
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAygwEzzDOPE3u0QgYpQJzd2RnI6KsbGEk",
-      authDomain: "studentsafe-f84e3.firebaseapp.com",
-      projectId: "studentsafe-f84e3",
-      storageBucket: "studentsafe-f84e3.appspot.com",
-      messagingSenderId: "669624594218",
-      appId: "1:669624594218:web:56b71d2cf93fe9349f7853"
-    };
-    
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    auth.languageCode = 'en'
-    
-    const provider = new GoogleAuthProvider();
-    
-    const googleLogin = document.getElementById("buttongoogle");
-    googleLogin.addEventListener("click", function(){
-      signInWithPopup(auth, provider)
-    .then((result) => {
-      
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const user = result.user;
-      console.log(user);
-      window.location.href = "google_form.php";
-    
-    }).catch((error) => {
-      
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    
-     
-    });
-    })
-    </script>
 </body>
 </html>
